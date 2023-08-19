@@ -17,18 +17,61 @@ public class StockExchangesController : ControllerBase
         _dbContext = dbContext;
     }
 
+    // throw actual exception
     [HttpGet]
     [AllowAnonymous]
-
-    public IEnumerable<StockExchangeEntity> GetAllExchange(int? id)
+    public IEnumerable<StockExchangeEntity> GetAllExchange()
     {
-        if (id == null)
+        try
         {
+            //consider if you have an exception here
+            throw new Exception("Could n't connect with db");
             return _dbContext.StockExchanges.ToList();
+
         }
-        else
+        catch
         {
-            return _dbContext.StockExchanges.ToList();
+            throw;
+        }
+    }
+
+    //throw actual exception messages
+    [HttpGet("GetById")]
+    [AllowAnonymous]
+    public IActionResult GetById(int? id)
+    {
+        try
+        {
+            //consider if you have an exception here
+            var res = _dbContext.StockExchanges.Where(x => x.ExchangeId == id).ToList();
+            if (!res.Any())
+                throw new Exception("No Data Available");
+            return Ok(res);
+
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    //instead of exception we can use our custom messages
+    [HttpGet("GetByName")]
+    [AllowAnonymous]
+    public IActionResult GetByName(string id)
+    {
+        try
+        {
+            //consider if you have an exception here
+            var res = _dbContext.StockExchanges.Where(x => x.ExchangeName == id).ToList();
+            if (!res.Any())
+                throw new Exception("No Data Available");
+            return Ok(res);
+
+        }
+        catch (Exception ex)
+        {
+            return BadRequest("Exchange Is Missing In DB");
         }
     }
 }
