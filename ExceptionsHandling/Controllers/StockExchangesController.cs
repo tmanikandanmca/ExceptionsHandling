@@ -1,4 +1,6 @@
-﻿using ExceptionsHandling.Models;
+﻿using System;
+using ExceptionsHandling.Exception;
+using ExceptionsHandling.Models;
 using ExceptionsHandling.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,16 +22,30 @@ public class StockExchangesController : ControllerBase
     [HttpGet]
     [AllowAnonymous]
 
-    public IEnumerable<StockExchangeEntity> GetAllExchange(int? id)
+    public IEnumerable<StockExchangeEntity> GetAllExchange()
     {
-        if (id == null)
-        {
+       
             return _dbContext.StockExchanges.ToList();
+       
+    }
+
+
+    [HttpGet("GetById")]
+    [AllowAnonymous]
+    public IActionResult GetExchangeById(int? id)
+    {
+        try
+        {
+            if (id <= 0) throw new ExchangeExceptions("Id is Not valid");
+            var res = _dbContext.StockExchanges.Where(x => x.ExchangeId == id).ToList();
+            return Ok(res);
         }
-        else
+        catch(ExchangeExceptions ex)
         {
-            return _dbContext.StockExchanges.ToList();
+            return BadRequest(ex.Message);
         }
     }
+
+
 }
 
