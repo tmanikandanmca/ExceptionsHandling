@@ -22,14 +22,12 @@ public class StockExchangesController : ControllerBase
 
     public IEnumerable<StockExchangeEntity> GetAllExchange(int? id)
     {
-        if (id == null)
-        {
-            return _dbContext.StockExchanges.ToList();
-        }
+        if (id < 0)
+            throw new System.Exception("its Not valid input Data");
         else
-        {
+        
             return _dbContext.StockExchanges.ToList();
-        }
+        
     }
 }
 

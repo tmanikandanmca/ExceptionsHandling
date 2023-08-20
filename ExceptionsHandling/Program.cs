@@ -1,3 +1,4 @@
+using ExceptionsHandling.Exception;
 using ExceptionsHandling.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +29,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.ConfigureCustomExceptionHandler();
 
 app.UseAuthorization();
 
