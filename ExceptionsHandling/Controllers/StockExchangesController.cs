@@ -21,15 +21,12 @@ public class StockExchangesController : ControllerBase
     [AllowAnonymous]
 
     public IEnumerable<StockExchangeEntity> GetAllExchange(int? id)
-    {
-        if (id == null)
-        {
+    { 
+        if (id<0 )
+        throw new System.Exception("Not a valid Request");
+   
             return _dbContext.StockExchanges.ToList();
-        }
-        else
-        {
-            return _dbContext.StockExchanges.ToList();
-        }
+        
     }
 }
 

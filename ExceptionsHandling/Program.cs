@@ -1,3 +1,4 @@
+using ExceptionsHandling.Exceptions;
 using ExceptionsHandling.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Read App settings
 
-var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true);
+var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json");
 
 
 // Add services to the container.
@@ -30,6 +31,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+// add Global Exception Handler
+app.ConfigureBuildInException();
 
 app.MapControllers();
 
